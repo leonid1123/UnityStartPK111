@@ -4,7 +4,8 @@ using UnityEngine;
 public class PlayerController : MonoBehaviour
 {
     public Rigidbody2D rb2d;
-     float spd=10f;
+    float spd=10f;
+    bool canJump = true;
     void Start()
     {
         rb2d = gameObject.GetComponent<Rigidbody2D>();       
@@ -13,9 +14,20 @@ public class PlayerController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        //rb2d.velocity = new Vector2(1,1);
         rb2d.velocity = new Vector2(Input.GetAxisRaw("Horizontal")*spd,rb2d.velocity.y);
-        if(Input.GetButtonUp("Jump")) {
+        //Debug.Log("Скорость:" + Input.GetAxisRaw("Horizontal"));
+        if(Input.GetButtonUp("Jump") & canJump) {
             rb2d.AddRelativeForce(Vector2.up*5,ForceMode2D.Impulse);
+            canJump=false;
         }
+    }
+    private void OnTriggerEnter2D(Collider2D other) {
+        Debug.Log("Ой!");
+        canJump = true;
+    }
+    private void OnTriggerExit2D(Collider2D other) {
+        Debug.Log("Не ОЙ!!");
+        canJump = false;
     }
 }
