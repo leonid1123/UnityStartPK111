@@ -7,15 +7,22 @@ public class PlayerController : MonoBehaviour
     float spd=10f;
     bool canJump = true;
     public Animator anim;
+    public SpriteRenderer sprite;
     void Start()
     {
         rb2d = gameObject.GetComponent<Rigidbody2D>(); 
-        anim = gameObject.GetComponent<Animator>();      
+        anim = gameObject.GetComponent<Animator>(); 
+
+        sprite = gameObject.GetComponent<SpriteRenderer>();     
     }
 
     // Update is called once per frame
     void Update()
     {
+        if(Input.GetKeyUp(KeyCode.H)) {
+            sprite.flipX=!sprite.flipX;
+        }
+
         //rb2d.velocity = new Vector2(1,1);
         rb2d.velocity = new Vector2(Input.GetAxisRaw("Horizontal")*spd,rb2d.velocity.y);
         //Debug.Log("Скорость:" + Input.GetAxisRaw("Horizontal"));
