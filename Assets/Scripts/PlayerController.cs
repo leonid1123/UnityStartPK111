@@ -15,33 +15,22 @@ public class PlayerController : MonoBehaviour
         anim = gameObject.GetComponent<Animator>(); 
         sprite = gameObject.GetComponent<SpriteRenderer>();     
     }
-
-    // Update is called once per frame
     void Update()
     {
-        if(Input.GetKeyUp(KeyCode.H)) {
-            transform.Rotate(new Vector3(0,180,0));
-        }
-
-        //rb2d.velocity = new Vector2(1,1);
         rb2d.velocity = new Vector2(Input.GetAxisRaw("Horizontal")*spd,rb2d.velocity.y);
-        //Debug.Log("Скорость:" + Input.GetAxisRaw("Horizontal"));
         if(Input.GetButtonUp("Jump") & canJump) {
             rb2d.AddRelativeForce(Vector2.up*8,ForceMode2D.Impulse);
             canJump=false;
-        }
-        /*
+        }        
         if(rb2d.velocity.x>0 & !isRight) {
-            sprite.flipX=!sprite.flipX;
+            transform.Rotate(new Vector3(0,180,0));
             isRight = true;
         }
         if(rb2d.velocity.x<0 & isRight) {
-            sprite.flipX=!sprite.flipX;
+            transform.Rotate(new Vector3(0,180,0));
             isRight = false;
         }
-*/
-        anim.SetFloat("mov",rb2d.velocity.sqrMagnitude);
-        
+        anim.SetFloat("mov",rb2d.velocity.sqrMagnitude);        
     }
     private void OnTriggerEnter2D(Collider2D other) {
         Debug.Log("Ой!");
