@@ -16,12 +16,25 @@ public class ChickenController : MonoBehaviour
     }
 
     // Update is called once per frame
-    void Update()
+    void FixedUpdate()
     {
         float currentDistance = Vector2.Distance(startPos,transform.position);
         if(currentDistance>=maxDistance){
             dir*=-1;
+            ChickenFlip();
         }
-        rb2d.velocity = Vector2.right*dir;
+        rb2d.velocity = Vector2.right*dir*2;
+    }
+    private void OnDrawGizmos() {
+        Gizmos.DrawWireSphere(transform.position+new Vector3(maxDistance,0,0),0.1f);
+        Gizmos.DrawWireSphere(transform.position-new Vector3(maxDistance,0,0),0.1f);
+    }
+    void ChickenFlip(){
+        transform.Rotate(0,180,0);
+    }
+    private void OnTriggerEnter2D(Collider2D other) {
+        if(other.tag=="Player") {
+            other.GetComponent<PlayerController>().TakeDmg(1);
+        }
     }
 }
