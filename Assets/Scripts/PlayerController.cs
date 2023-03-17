@@ -4,6 +4,7 @@ using UnityEngine;
 public class PlayerController : MonoBehaviour
 {
     Rigidbody2D rb2d;
+    [SerializeField]
     float spd = 10f;
     bool canJump = true;
     Animator anim;
@@ -11,7 +12,8 @@ public class PlayerController : MonoBehaviour
     bool isRight = true;
     [SerializeField]
     int HP = 100;
-    bool canMove = true;
+    private Vector3 m_Velocity = Vector3.zero;
+    [Range(0, .3f)][SerializeField] private float m_MovementSmoothing = .05f;
     void Start()
     {
         rb2d = gameObject.GetComponent<Rigidbody2D>();
@@ -20,10 +22,9 @@ public class PlayerController : MonoBehaviour
     }
     void Update()
     {
-        if (canMove)
-        {
-            rb2d.velocity = new Vector2(Input.GetAxisRaw("Horizontal") * spd, rb2d.velocity.y);
-        }
+        float move = Input.GetAxisRaw("Horizontal");
+        Vector2 targetVelocity = new Vector2(move * spd,rb2d.velocity.y);
+        rb2d.velocity = Vector3.SmoothDamp(rb2d.velocity, targetVelocity, ref m_Velocity, m_MovementSmoothing);
 
         if (Input.GetButtonUp("Jump") & canJump)
         {
@@ -60,7 +61,6 @@ public class PlayerController : MonoBehaviour
     public void TakeDmg(int _dmg)
     {
         HP -= _dmg;
-        canMove = false;
         //rb2d.AddRelativeForce(new Vector2(10, 10), ForceMode2D.Impulse);
     }
 }

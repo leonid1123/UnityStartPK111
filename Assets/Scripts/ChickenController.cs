@@ -30,7 +30,6 @@ public class ChickenController : MonoBehaviour
     {
         Gizmos.DrawWireSphere(transform.position + new Vector3(maxDistance, 0, 0), 0.1f);
         Gizmos.DrawWireSphere(transform.position - new Vector3(maxDistance, 0, 0), 0.1f);
-        //Gizmos.DrawLine(transform.position, GameObject.Find("Player").transform.position);
     }
     void ChickenFlip()
     {
