@@ -14,6 +14,10 @@ public class PlayerController : MonoBehaviour
     int HP = 100;
     private Vector3 m_Velocity = Vector3.zero;
     [Range(0, .3f)][SerializeField] private float m_MovementSmoothing = .05f;
+    bool canMove = true;
+    float move;
+    [SerializeField]
+    LayerMask enemyMask;
     void Start()
     {
         rb2d = gameObject.GetComponent<Rigidbody2D>();
@@ -22,7 +26,11 @@ public class PlayerController : MonoBehaviour
     }
     void Update()
     {
-        float move = Input.GetAxisRaw("Horizontal");
+        if(canMove)
+        {
+            move = Input.GetAxisRaw("Horizontal");
+        }
+
         Vector2 targetVelocity = new Vector2(move * spd,rb2d.velocity.y);
         rb2d.velocity = Vector3.SmoothDamp(rb2d.velocity, targetVelocity, ref m_Velocity, m_MovementSmoothing);
 
@@ -46,6 +54,11 @@ public class PlayerController : MonoBehaviour
         {
             anim.SetBool("jumpStart", true);
         }
+        if (Input.GetButtonDown("Fire1"))
+        {
+            canMove = false;
+            anim.SetTrigger("atk1");
+        }
     }
     private void OnTriggerEnter2D(Collider2D other)
     {
@@ -58,9 +71,40 @@ public class PlayerController : MonoBehaviour
         Debug.Log("Не ОЙ!!");
         canJump = false;
     }
-    public void TakeDmg(int _dmg)
+    public void TakeDmg(int _dmg, float _enemyX)
     {
+        int dir = 1;
+        if(_enemyX > transform.position.x)
+        {
+            dir = -1;
+        } else
+        {
+            dir = 1;
+        }
         HP -= _dmg;
-        //rb2d.AddRelativeForce(new Vector2(10, 10), ForceMode2D.Impulse);
+        rb2d.AddRelativeForce(new Vector2(10*dir, 2.5f), ForceMode2D.Impulse);
+        canMove = false;
+        StartCoroutine("CanDo");
     }
+    IEnumerator CanDo()
+    {
+        yield return new WaitForSeconds(2f);
+        canMove= true;
+        Debug.Log("can move now!");
+    }
+    public void CanMove()
+    {
+        canMove = true;
+    }
+    public void Kill() 
+    {
+        Collider2D enemy = Physics2D.OverlapCircle(transform.position + new Vector3(1.5f, -1.9f, 0),1f,enemyMask);
+        if(enemy != null && enemy.CompareTag("enemy")) 
+        {
+            Debug.Log(enemy);
+            enemy.GetComponent<ChickenController>().Death();
+        }
+    }
+    //x + 1,5
+    //y - 1,9
 }
