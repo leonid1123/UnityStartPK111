@@ -98,12 +98,14 @@ public class PlayerController : MonoBehaviour
     }
     public void Kill() 
     {
-        Collider2D enemy = Physics2D.OverlapCircle(transform.position + new Vector3(1.5f, -1.9f, 0),1f,enemyMask);
+        Collider2D enemy = Physics2D.OverlapCircle(transform.position + new Vector3(1.5f, -1.9f, 0),0.3f,enemyMask);
         if(enemy != null && enemy.CompareTag("enemy")) 
         {
-            Debug.Log(enemy);
             enemy.GetComponent<ChickenController>().Death();
         }
+    }
+    private void OnDrawGizmosSelected() {
+        Gizmos.DrawWireSphere(transform.position + new Vector3(1.5f, -1.9f, 0),0.3f);
     }
     //x + 1,5
     //y - 1,9
