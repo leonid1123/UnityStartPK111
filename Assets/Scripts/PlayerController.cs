@@ -18,6 +18,8 @@ public class PlayerController : MonoBehaviour
     float move;
     [SerializeField]
     LayerMask enemyMask;
+    [SerializeField]
+    Transform atkPoint;
     void Start()
     {
         rb2d = gameObject.GetComponent<Rigidbody2D>();
@@ -32,8 +34,9 @@ public class PlayerController : MonoBehaviour
         }
 
         Vector2 targetVelocity = new Vector2(move * spd,rb2d.velocity.y);
+        //поправить движение
         rb2d.velocity = Vector3.SmoothDamp(rb2d.velocity, targetVelocity, ref m_Velocity, m_MovementSmoothing);
-
+        //поправить прыжок
         if (Input.GetButtonUp("Jump") & canJump)
         {
             rb2d.AddRelativeForce(Vector2.up * 8, ForceMode2D.Impulse);
@@ -88,7 +91,7 @@ public class PlayerController : MonoBehaviour
     }
     IEnumerator CanDo()
     {
-        yield return new WaitForSeconds(2f);
+        yield return new WaitForSeconds(1f);
         canMove= true;
         Debug.Log("can move now!");
     }
@@ -98,7 +101,7 @@ public class PlayerController : MonoBehaviour
     }
     public void Kill() 
     {
-        Collider2D enemy = Physics2D.OverlapCircle(transform.position + new Vector3(1.5f, -1.9f, 0),0.3f,enemyMask);
+        Collider2D enemy = Physics2D.OverlapCircle(new Vector2(atkPoint.position.x,atkPoint.position.y),0.3f,enemyMask);
         if(enemy != null && enemy.CompareTag("enemy")) 
         {
             enemy.GetComponent<ChickenController>().Death();
