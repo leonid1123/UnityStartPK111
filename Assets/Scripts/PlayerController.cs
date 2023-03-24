@@ -38,6 +38,7 @@ public class PlayerController : MonoBehaviour
         if (Input.GetButtonDown("Jump") & canJump)
         {
             rb2d.AddRelativeForce(Vector2.up * 8, ForceMode2D.Impulse);
+            anim.SetBool("isJump", true);
             canJump = false;
         }
         if (rb2d.velocity.x > 0 & !isRight)
@@ -52,13 +53,12 @@ public class PlayerController : MonoBehaviour
         }
         anim.SetFloat("mov", rb2d.velocity.sqrMagnitude);
 
-        if (Input.GetButtonUp("Jump"))
-        {
-            anim.SetBool("isJump", true);
-        }
+
         if (Input.GetButtonDown("Fire1"))
         {
+            
             canMove = false;
+            move = 0;
             anim.SetTrigger("atk1");
         }
     }
