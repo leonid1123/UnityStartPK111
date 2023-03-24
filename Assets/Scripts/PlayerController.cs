@@ -12,8 +12,6 @@ public class PlayerController : MonoBehaviour
     bool isRight = true;
     [SerializeField]
     int HP = 100;
-    private Vector3 m_Velocity = Vector3.zero;
-    [Range(0, .3f)][SerializeField] private float m_MovementSmoothing = .05f;
     bool canMove = true;
     float move;
     [SerializeField]
@@ -28,16 +26,16 @@ public class PlayerController : MonoBehaviour
     }
     void Update()
     {
-        if(canMove)
+        if (canMove)
         {
             move = Input.GetAxisRaw("Horizontal");
         }
-
-        Vector2 targetVelocity = new Vector2(move * spd,rb2d.velocity.y);
-        //поправить движение
-        rb2d.velocity = Vector3.SmoothDamp(rb2d.velocity, targetVelocity, ref m_Velocity, m_MovementSmoothing);
+        //на самом деле это управляет движением!!!!
+        Vector2 targetVelocity = new Vector2(move * spd, rb2d.velocity.y);
+        //поправить движение - сделано
+        rb2d.velocity = Vector3.Lerp(rb2d.velocity, targetVelocity, 0.05f);
         //поправить прыжок
-        if (Input.GetButtonUp("Jump") & canJump)
+        if (Input.GetButtonDown("Jump") & canJump)
         {
             rb2d.AddRelativeForce(Vector2.up * 8, ForceMode2D.Impulse);
             canJump = false;
@@ -53,9 +51,10 @@ public class PlayerController : MonoBehaviour
             isRight = false;
         }
         anim.SetFloat("mov", rb2d.velocity.sqrMagnitude);
+
         if (Input.GetButtonUp("Jump"))
         {
-            anim.SetBool("jumpStart", true);
+            anim.SetBool("isJump", true);
         }
         if (Input.GetButtonDown("Fire1"))
         {
@@ -67,7 +66,7 @@ public class PlayerController : MonoBehaviour
     {
         Debug.Log("Ой!");
         canJump = true;
-        anim.SetBool("jumpStart", false);
+        anim.SetBool("isJump", false);
     }
     private void OnTriggerExit2D(Collider2D other)
     {
@@ -77,38 +76,42 @@ public class PlayerController : MonoBehaviour
     public void TakeDmg(int _dmg, float _enemyX)
     {
         int dir = 1;
-        if(_enemyX > transform.position.x)
+        if (_enemyX > transform.position.x)
         {
             dir = -1;
-        } else
+        }
+        else
         {
             dir = 1;
         }
         HP -= _dmg;
-        rb2d.AddRelativeForce(new Vector2(10*dir, 2.5f), ForceMode2D.Impulse);
+        rb2d.AddRelativeForce(new Vector2(0, 1f), ForceMode2D.Impulse);
+        move = dir;
         canMove = false;
         StartCoroutine("CanDo");
     }
     IEnumerator CanDo()
     {
-        yield return new WaitForSeconds(1f);
-        canMove= true;
+        yield return new WaitForSeconds(0.2f);
+        canMove = true;
+        move = 0;
         Debug.Log("can move now!");
     }
     public void CanMove()
     {
         canMove = true;
     }
-    public void Kill() 
+    public void Kill()
     {
-        Collider2D enemy = Physics2D.OverlapCircle(new Vector2(atkPoint.position.x,atkPoint.position.y),0.3f,enemyMask);
-        if(enemy != null && enemy.CompareTag("enemy")) 
+        Collider2D enemy = Physics2D.OverlapCircle(new Vector2(atkPoint.position.x, atkPoint.position.y), 0.3f, enemyMask);
+        if (enemy != null && enemy.CompareTag("enemy"))
         {
             enemy.GetComponent<ChickenController>().Death();
         }
     }
-    private void OnDrawGizmosSelected() {
-        Gizmos.DrawWireSphere(transform.position + new Vector3(1.5f, -1.9f, 0),0.3f);
+    private void OnDrawGizmosSelected()
+    {
+        Gizmos.DrawWireSphere(transform.position + new Vector3(1.5f, -1.9f, 0), 0.3f);
     }
     //x + 1,5
     //y - 1,9
