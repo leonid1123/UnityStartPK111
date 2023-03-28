@@ -56,7 +56,7 @@ public class PlayerController : MonoBehaviour
 
         if (Input.GetButtonDown("Fire1"))
         {
-            
+
             canMove = false;
             move = 0;
             anim.SetTrigger("atk1");
@@ -64,14 +64,18 @@ public class PlayerController : MonoBehaviour
     }
     private void OnTriggerEnter2D(Collider2D other)
     {
-        Debug.Log("Ой!");
-        canJump = true;
-        anim.SetBool("isJump", false);
+        if (other.CompareTag("Ground") || other.CompareTag("Chicken") || other.CompareTag("BoD"))
+        {
+            canJump = true;
+            anim.SetBool("isJump", false);
+        }
     }
     private void OnTriggerExit2D(Collider2D other)
     {
-        Debug.Log("Не ОЙ!!");
-        canJump = false;
+        if (other.CompareTag("Ground") || other.CompareTag("Chicken") || other.CompareTag("BoD"))
+        {
+            canJump = false;
+        }
     }
     public void TakeDmg(int _dmg, float _enemyX)
     {
@@ -104,9 +108,16 @@ public class PlayerController : MonoBehaviour
     public void Kill()
     {
         Collider2D enemy = Physics2D.OverlapCircle(new Vector2(atkPoint.position.x, atkPoint.position.y), 0.3f, enemyMask);
-        if (enemy != null && enemy.CompareTag("enemy"))
+        if (enemy != null)
         {
-            enemy.GetComponent<ChickenController>().Death();
+            if (enemy.CompareTag("Chicken"))
+            {
+                enemy.GetComponent<ChickenController>().Death();
+            }
+            if (enemy.CompareTag("BoD"))
+            {
+                enemy.GetComponent<BoDController>().TakeDmg(10);
+            }
         }
     }
     private void OnDrawGizmosSelected()
