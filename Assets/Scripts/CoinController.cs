@@ -3,23 +3,22 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class CoinController : MonoBehaviour
-{
-    // Start is called before the first frame update
+{ 
+    GameObject uicontroller;
     void Start()
     {
-        
+        uicontroller = GameObject.Find("Canvas"); 
     }
-
-    // Update is called once per frame
     void Update()
     {
-        
     }
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if(collision.CompareTag("Player"))
         {
-            Destroy(gameObject);  
+            //переписать на синглтон
+            uicontroller.GetComponent<UIController>().ChangeCoins(1);
+            Destroy(gameObject);
         }
     }
 }

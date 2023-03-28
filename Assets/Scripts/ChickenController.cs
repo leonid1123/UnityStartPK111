@@ -12,29 +12,36 @@ public class ChickenController : MonoBehaviour
     float rad = 0.65f;
     [SerializeField]
     LayerMask mask;
+    Animator anim;
+    bool alive = true;
     void Start()
     {
         startPos = transform.position;
         rb2d = GetComponent<Rigidbody2D>();
+        anim = GetComponent<Animator>();
     }
 
     // Update is called once per frame
     void FixedUpdate()
     {
-        float currentDistance = Vector2.Distance(startPos, transform.position);
-        if (currentDistance >= maxDistance)
+        if (alive)
         {
-            dir *= -1;
-            ChickenFlip();
-        }
-        rb2d.velocity = Vector2.right * dir * 2;
+            float currentDistance = Vector2.Distance(startPos, transform.position);
+            if (currentDistance >= maxDistance)
+            {
+                dir *= -1;
+                ChickenFlip();
+            }
+            rb2d.velocity = Vector2.right * dir * 2;
 
-        Collider2D player = Physics2D.OverlapCircle(transform.position,rad,mask);
-        Debug.Log(player);
-        if (player!=null && player.name.Equals("Player"))
-        {
-            player.GetComponent<PlayerController>().TakeDmg(1,transform.position.x);
+            Collider2D player = Physics2D.OverlapCircle(transform.position, rad, mask);
+            Debug.Log(player);
+            if (player != null && player.name.Equals("Player"))
+            {
+                player.GetComponent<PlayerController>().TakeDmg(1, transform.position.x);
+            }
         }
+
     }
     private void OnDrawGizmos()
     {
@@ -49,6 +56,9 @@ public class ChickenController : MonoBehaviour
     }
     public void Death()
     {
-        Destroy(gameObject);
+        alive= false;
+        rb2d.velocity = Vector2.zero;
+        anim.SetBool("isDead", true);
+        Destroy(gameObject, 0.5f);
     }
 }
