@@ -9,6 +9,7 @@ TagManager:
   - enemy
   - BoD
   - Chicken
+  - Items
   layers:
   - Default
   - TransparentFX
@@ -19,7 +20,7 @@ TagManager:
   - Player
   - Mobs
   - Enemy
-  - 
+  - Items
   - 
   - 
   - 

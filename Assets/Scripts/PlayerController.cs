@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 public class PlayerController : MonoBehaviour
 {
     Rigidbody2D rb2d;
@@ -18,14 +19,19 @@ public class PlayerController : MonoBehaviour
     LayerMask enemyMask;
     [SerializeField]
     Transform atkPoint;
+    GameObject UIController;
+    [SerializeField]
+    GameObject panel;
     void Start()
     {
+        UIController = GameObject.Find("Canvas");
         rb2d = gameObject.GetComponent<Rigidbody2D>();
         anim = gameObject.GetComponent<Animator>();
         sprite = gameObject.GetComponent<SpriteRenderer>();
     }
     void Update()
     {
+        UIController.GetComponent<UIController>().ChangeHP(HP);
         if (canMove)
         {
             move = Input.GetAxisRaw("Horizontal");
@@ -69,6 +75,10 @@ public class PlayerController : MonoBehaviour
             canJump = true;
             anim.SetBool("isJump", false);
         }
+        if(other.name=="DEATH")
+        {
+            TakeDmg(100500,transform.position.x);
+        }
     }
     private void OnTriggerExit2D(Collider2D other)
     {
@@ -89,6 +99,12 @@ public class PlayerController : MonoBehaviour
             dir = 1;
         }
         HP -= _dmg;
+        if (HP<=0)
+        {
+            Time.timeScale = 0;
+            panel.SetActive(true);
+            
+        }
         rb2d.AddRelativeForce(new Vector2(0, 1f), ForceMode2D.Impulse);
         move = dir;
         canMove = false;
@@ -117,6 +133,10 @@ public class PlayerController : MonoBehaviour
             if (enemy.CompareTag("BoD"))
             {
                 enemy.GetComponent<BoDController>().TakeDmg(10);
+            }
+            if (enemy.CompareTag("Items"))
+            {
+                enemy.GetComponent<vaseController>().DestroyVase();
             }
         }
     }

@@ -10,6 +10,7 @@ public class BoDController : MonoBehaviour
     [SerializeField]
     GameObject coin;
 
+
     void Start()
     {
         anim= GetComponent<Animator>();
