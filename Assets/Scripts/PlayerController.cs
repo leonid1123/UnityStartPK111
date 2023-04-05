@@ -60,10 +60,11 @@ public class PlayerController : MonoBehaviour
         anim.SetFloat("mov", rb2d.velocity.sqrMagnitude);
 
 
-        if (Input.GetButtonDown("Fire1"))
+        if (Input.GetButtonDown("Fire1") && canJump==true)
         {
 
             canMove = false;
+            canJump = false;
             move = 0;
             anim.SetTrigger("atk1");
         }
@@ -120,6 +121,7 @@ public class PlayerController : MonoBehaviour
     public void CanMove()
     {
         canMove = true;
+        canJump = true;
     }
     public void Kill()
     {

@@ -7,7 +7,7 @@ public class CoinController : MonoBehaviour
     GameObject uicontroller;
     void Start()
     {
-        uicontroller = GameObject.Find("Canvas"); 
+        uicontroller = GameObject.Find("Canvas");
     }
     void Update()
     {
