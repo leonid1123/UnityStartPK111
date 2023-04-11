@@ -47,12 +47,12 @@ public class PlayerController : MonoBehaviour
             anim.SetBool("isJump", true);
             canJump = false;
         }
-        if (rb2d.velocity.x > 0 & !isRight)
+        if (rb2d.velocity.x > 0.01 & !isRight)
         {
             transform.Rotate(new Vector3(0, 180, 0));
             isRight = true;
         }
-        if (rb2d.velocity.x < 0 & isRight)
+        if (rb2d.velocity.x < -0.01 & isRight)
         {
             transform.Rotate(new Vector3(0, 180, 0));
             isRight = false;
