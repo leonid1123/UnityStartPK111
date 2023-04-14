@@ -4,20 +4,28 @@ using UnityEngine;
 
 public class BoDIdle : StateMachineBehaviour
 {
+    Collider2D player;
     Transform pointA;
     Transform pointB;
     [SerializeField]
     LayerMask playerMask;
+
     // OnStateEnter is called when a transition starts and the state machine starts to evaluate this state
-    //override public void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
-    //{
-    //    
-    //}
+    override public void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
+    {
+        pointA = animator.GetComponent<Transform>().GetChild(1);
+        pointB = animator.GetComponent<Transform>().GetChild(2);
+        Debug.Log(pointA);
+    }
 
     // OnStateUpdate is called on each Update frame between OnStateEnter and OnStateExit callbacks
     override public void OnStateUpdate(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
-        Physics2D.OverlapArea(new Vector2(pointA.position.x,pointA.position.y), new Vector2(pointB.position.x, pointB.position.y), playerMask);
+        player = Physics2D.OverlapArea(new Vector2(pointA.position.x, pointA.position.y), new Vector2(pointB.position.x, pointB.position.y), playerMask);
+        if (player != null && player.CompareTag("Player"))
+        {
+            animator.SetBool("isWalk", true);
+        }
     }
 
     // OnStateExit is called when a transition ends and the state machine finishes evaluating this state
