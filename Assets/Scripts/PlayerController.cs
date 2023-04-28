@@ -22,6 +22,9 @@ public class PlayerController : MonoBehaviour
     GameObject UIController;
     [SerializeField]
     GameObject panel;
+    bool canOpenChest=false;
+    int numberOfGoldKeys = 1;
+    GameObject chest = null;
     void Start()
     {
         UIController = GameObject.Find("Canvas");
@@ -68,6 +71,13 @@ public class PlayerController : MonoBehaviour
             move = 0;
             anim.SetTrigger("atk1");
         }
+
+        if (Input.GetKeyDown(KeyCode.Tilde) && canOpenChest)
+        {
+            chest.GetComponent<CestController>().OpenChest();
+            numberOfGoldKeys--;
+            chest = null;
+        }
     }
     private void OnTriggerEnter2D(Collider2D other)
     {
@@ -80,12 +90,22 @@ public class PlayerController : MonoBehaviour
         {
             TakeDmg(100500,transform.position.x);
         }
+        if (other.CompareTag("ChestGold") && numberOfGoldKeys>0)
+        {
+            canOpenChest = true;
+            chest = other.gameObject;
+        }
     }
     private void OnTriggerExit2D(Collider2D other)
     {
         if (other.CompareTag("Ground") || other.CompareTag("Chicken") || other.CompareTag("BoD"))
         {
             canJump = false;
+        }
+        if (other.CompareTag("ChestGold"))
+        {
+            canOpenChest = false;
+            chest = null;
         }
     }
     public void TakeDmg(int _dmg, float _enemyX)
