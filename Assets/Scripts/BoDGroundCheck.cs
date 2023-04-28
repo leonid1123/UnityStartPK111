@@ -35,8 +35,12 @@ public class BoDGroundCheck : MonoBehaviour
             onGroundRight = true;
         }
     }
-    //public bool OnGround()
-    //{
-        //return onGround;
-    //}
+    public bool OnGroundRight()
+    {
+        return onGroundRight;
+    }
+    public bool OnGroundLeft()
+    {
+        return onGroundLeft;
+    }
 }

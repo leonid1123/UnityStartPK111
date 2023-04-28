@@ -23,10 +23,10 @@ public class BoDIdle : StateMachineBehaviour
     override public void OnStateUpdate(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
         player = Physics2D.OverlapArea(new Vector2(pointA.position.x, pointA.position.y), new Vector2(pointB.position.x, pointB.position.y), playerMask);
-        /*if (player != null && player.CompareTag("Player") && bodGroundCheck.OnGround())
+        if (player != null && player.CompareTag("Player") && bodGroundCheck.OnGroundLeft() && bodGroundCheck.OnGroundRight())
         {
             animator.SetBool("isWalk", true);
-        }*/
+        }
     }
 
     // OnStateExit is called when a transition ends and the state machine finishes evaluating this state
