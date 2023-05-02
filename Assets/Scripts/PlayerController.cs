@@ -23,7 +23,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField]
     GameObject panel;
     bool canOpenChest=false;
-    int numberOfGoldKeys = 1;
+    int numberOfGoldKeys = 100;
     GameObject chest = null;
     void Start()
     {
@@ -72,7 +72,7 @@ public class PlayerController : MonoBehaviour
             anim.SetTrigger("atk1");
         }
 
-        if (Input.GetKeyDown(KeyCode.Tilde) && canOpenChest)
+        if (Input.GetKeyDown(KeyCode.E) && canOpenChest)
         {
             chest.GetComponent<CestController>().OpenChest();
             numberOfGoldKeys--;

@@ -147,6 +147,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ChestText: {fileID: 1573192349383415347}
+  ChestList:
+  - {fileID: 3459637667576091220, guid: 83b1d196312dfd34d85b0a87fb210c9a, type: 3}
+  - {fileID: 3459637667576091220, guid: fcfc65d062e23b04bbf01eee8fd1ffcb, type: 3}
+  - {fileID: 5520546134084082078, guid: e991ff87bb78d08428129f93dddbff6b, type: 3}
 --- !u!1 &1573192349383415347
 GameObject:
   m_ObjectHideFlags: 0
