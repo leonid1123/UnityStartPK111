@@ -9,6 +9,8 @@ public class BoDController : MonoBehaviour
     Animator anim;
     [SerializeField]
     GameObject coin;
+    [SerializeField]
+    GameObject key;
     Rigidbody2D rb2d;
     bool gotPlayer = false;
 
@@ -56,6 +58,7 @@ public class BoDController : MonoBehaviour
     public void Death()
     {
         Instantiate(coin, transform.position, transform.rotation);
+        Instantiate(key, transform.position, transform.rotation);
         Destroy(gameObject);
     }
 }

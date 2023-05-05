@@ -23,10 +23,10 @@ public class BoDIdle : StateMachineBehaviour
     override public void OnStateUpdate(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
         player = Physics2D.OverlapArea(new Vector2(pointA.position.x, pointA.position.y), new Vector2(pointB.position.x, pointB.position.y), playerMask);
-        float myX = animator.GetComponent<Transform>().position.x;
-        float playerX = player.transform.position.x;
         if (player != null)
         {
+            float myX = animator.GetComponent<Transform>().position.x;
+            float playerX = player.transform.position.x;
 
             if (playerX > myX && bodGroundCheck.OnGroundRight())
             {

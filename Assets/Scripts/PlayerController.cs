@@ -23,7 +23,6 @@ public class PlayerController : MonoBehaviour
     [SerializeField]
     GameObject panel;
     bool canOpenChest=false;
-    int numberOfGoldKeys = 100;
     GameObject chest = null;
     void Start()
     {
@@ -75,7 +74,7 @@ public class PlayerController : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.E) && canOpenChest)
         {
             chest.GetComponent<CestController>().OpenChest();
-            numberOfGoldKeys--;
+            UIController.GetComponent<UIController>().ChangeKeys(-1);
             chest = null;
         }
     }
@@ -90,7 +89,7 @@ public class PlayerController : MonoBehaviour
         {
             TakeDmg(100500,transform.position.x);
         }
-        if (other.CompareTag("ChestGold") && numberOfGoldKeys>0)
+        if (other.CompareTag("ChestGold") && UIController.GetComponent<UIController>().GetKeys()>0)
         {
             canOpenChest = true;
             chest = other.gameObject;

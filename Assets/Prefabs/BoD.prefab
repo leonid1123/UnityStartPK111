@@ -357,6 +357,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   HP: 100
   coin: {fileID: 3459637667576091220, guid: 83b1d196312dfd34d85b0a87fb210c9a, type: 3}
+  key: {fileID: 7705845784383178794, guid: ffcfa09dae1101a4fa1cb3a25595ac16, type: 3}
 --- !u!114 &6868384977892936431
 MonoBehaviour:
   m_ObjectHideFlags: 0
