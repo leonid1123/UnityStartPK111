@@ -37,7 +37,7 @@ public class BoDWalk : StateMachineBehaviour
             }
             if (myX > playerX)
             {
-                if (!bodGroundCheck.OnGroundLeft() && !bodGroundCheck.OnGroundRight())
+                if (!bodGroundCheck.OnGroundLeft() || !bodGroundCheck.OnGroundRight())
                 {
                     animator.SetBool("isWalk", false);
                 }
@@ -45,12 +45,15 @@ public class BoDWalk : StateMachineBehaviour
                 if (isRight)
                 {
                     animator.transform.Rotate(0,180,0);
+                    animator.transform.GetChild(3).Rotate(0, 180, 0);
+                    
+
                     isRight = false;
                 }
             }
             else
             {
-                if (!bodGroundCheck.OnGroundLeft() && !bodGroundCheck.OnGroundRight())
+                if (!bodGroundCheck.OnGroundLeft() || !bodGroundCheck.OnGroundRight())
                 {
                     animator.SetBool("isWalk", false);
                 }
@@ -58,13 +61,14 @@ public class BoDWalk : StateMachineBehaviour
                 if (!isRight)
                 {
                     animator.transform.Rotate(0, 180, 0);
+                    animator.transform.GetChild(3).Rotate(0, 180, 0);
+                    
                     isRight = true;
                 }
             }
         } else
         {
             animator.SetBool("isWalk", false);
-            //animator.GetComponent<Rigidbody2D>().velocity = Vector2.zero;
         }
     }
 
